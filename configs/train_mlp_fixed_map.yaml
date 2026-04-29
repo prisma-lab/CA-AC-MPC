@@ -1,0 +1,88 @@
+seed: 0
+device: auto
+policy_type: mlp_only
+mpc_backend: auto
+
+# Kept for compatibility with shared policy plumbing.
+mpc_horizon: 2
+mpc_state_dim: 10
+
+# std ~= 0.44 -> log_std_init ~= ln(0.44)
+log_std_init: -0.82
+
+env:
+  track: splits
+  track_config_path: envs/tracks/abudhabi.yaml
+  kwargs:
+    obs_mode: paper
+    n_future_gates: 2
+    max_steps: 2500
+    loop_track_on_finish: false
+    min_gate_z: 0.5
+
+    use_yaml_start_pos: true
+    init_pos_cube: 0.2
+    spawn_distance: 1.0
+    spawn_plane_margin: 0.3
+    crash_z_min: -2.0
+
+    # Crossing-only gate pass: no spherical radius shortcut.
+    gate_pass_radius: 0.0
+    gate_pass_radius_requires_plane: false
+    gate_thickness: 0.2
+    debug_info: false
+
+vec_env:
+  n_envs: 64
+  type: subproc
+  normalize_obs: true
+  clip_obs: 10.0
+
+ppo:
+  total_timesteps: 10000000
+  n_steps: 256
+  batch_size: 2048
+  n_epochs: 10
+  learning_rate:
+    schedule: linear
+    initial: 0.0003
+    final: 0.00003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.15
+  target_kl: 0.03
+  ent_coef: 0.0
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+
+logging:
+  log_dir: runs/mlp
+  save_path: runs/mlp/model.zip
+  auto_track_naming: true
+  episode_print_freq: 200
+  progress_bar: true
+
+checkpoint:
+  dir: runs/mlp/checkpoints
+  freq: 100000
+
+resume:
+  enabled: false
+  path: ""
+  reset_num_timesteps: false
+  load_vecnormalize: true
+  auto_best_if_compatible: true
+
+eval:
+  enabled: true
+  freq: 100000
+  episodes: 10
+  n_envs: 1
+  deterministic: true
+  env_kwargs: {}
+  plot_enabled: false
+  plot_freq: 100000
+
+post_eval:
+  enabled: true
+  max_steps_cap: 3000

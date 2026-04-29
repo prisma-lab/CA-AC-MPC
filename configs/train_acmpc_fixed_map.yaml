@@ -1,0 +1,90 @@
+seed: 0
+device: auto
+policy_type: acmpc_diffmpc
+mpc_backend: fast
+mpc_max_iter: 5
+mpc_horizon: 2
+mpc_state_dim: 10
+
+# std ~= 0.30 -> log_std_init ~= ln(0.30)
+log_std_init: -1.2
+
+env:
+  # Fallback name used only if track_config_path is missing.
+  track: splits
+  # Fixed map for all episodes (train/eval/post-eval): no map switching.
+  track_config_path: envs/tracks/zurich.yaml
+  kwargs:
+    obs_mode: paper
+    n_future_gates: 2
+    max_steps: 2500
+    loop_track_on_finish: true
+    min_gate_z: 0.5
+
+    # Spawn logic from YAML track start_pos
+    use_yaml_start_pos: true
+    init_pos_cube: 0.2
+    spawn_distance: 1.0
+    spawn_plane_margin: 0.3
+    crash_z_min: -2.0
+
+    gate_pass_radius: 0.01
+    gate_pass_radius_requires_plane: false
+    gate_thickness: 0.0
+    debug_info: false
+
+vec_env:
+  n_envs: 64
+  type: subproc
+  normalize_obs: true
+  clip_obs: 10.0
+
+ppo:
+  total_timesteps: 5_000_000
+  n_steps: 256
+  batch_size: 2048
+  n_epochs: 10
+  learning_rate:
+    schedule: linear
+    initial: 0.0003
+    final_factor: 0.1
+    decay_start: 0.3
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  target_kl: 0.03
+  ent_coef: 0.0
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+
+logging:
+  log_dir: runs/acmpc_h_2
+  save_path: runs/acmpc_h_2/model.zip
+  auto_track_naming: true
+  episode_print_freq: 200
+  progress_bar: true
+
+checkpoint:
+  dir: runs/acmpc_h_2/checkpoints
+  freq: 100000
+
+resume:
+  enabled: false
+  path: ""
+  reset_num_timesteps: false
+  load_vecnormalize: true
+  auto_best_if_compatible: true
+
+eval:
+  enabled: true
+  freq: 1000000
+  episodes: 30
+  n_envs: 1
+  deterministic: true
+  env_kwargs: {}
+  plot_enabled: false
+  plot_freq: 100000
+
+post_eval:
+  enabled: true
+  max_steps_cap: 3000

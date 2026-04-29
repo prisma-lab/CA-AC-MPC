@@ -1,0 +1,21 @@
+track_id: "rpg_slit_s_benchmark"
+
+# Spawn pose [x, y, z, yaw_degrees].
+start_pos: [-5.0, 5.0, 1.0, -60.0]
+
+# Gates [x, y, z, yaw_degrees, width, height].
+
+gate_1: [-1.0, -1.0, 1.5, -20.0, 1.5, 1.5]
+gate_2: [8.0, 6.0, 1.5, 0.0, 1.5, 1.5]
+gate_3: [8.0, -4.0, 1.5, -120.0, 1.5, 1.5]
+
+# Split-S entry gate.
+gate_4: [-4.0, -5.5, 3.5, 180.0, 1.5, 1.5]
+
+# Split-S exit gate.
+gate_5: [-4.0, -5.5, 1.0, 0.0, 1.5, 1.5]
+
+# Return section.
+gate_6: [4, -1.0, 1.5, 80.0, 1.5, 1.5]
+
+gate_7: [-2.5, 6.0, 1.5, -160.0, 1.5, 1.5]
