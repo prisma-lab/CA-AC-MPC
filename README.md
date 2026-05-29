@@ -6,6 +6,8 @@ This is the code accompanying the paper:
 
 A. Buo, V. Cammarota, M. Avagnale, P. Arpenti, V. Lippiello, F. Ruggiero, "CA-AC-MPC: CUDA-Accelerated Actor-Critic Model Predictive Control", 2026 International Conference on Unmanned Aircraft Systems (ICUAS), Corfu, Greece
 
+The paper is available at https://arxiv.org/abs/2605.29155
+
 ## Project Description
 
 Actor-Critic Model Predictive Control (AC-MPC) is a hybrid control paradigm where a neural network (the actor) predicts the cost parameters for a differentiable MPC layer. This allows the system to benefit from the interpretability and constraint-handling of MPC while leveraging the adaptive learning capabilities of RL.
